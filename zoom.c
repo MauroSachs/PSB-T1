@@ -1,5 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "lib_ppm.h"
+
+unsigned char apply_subpixel_pattern(unsigned char color, int x, int y);
+
 
 int main()
 {
@@ -22,45 +26,20 @@ int main()
 			{
 				struct pixel_s pixel = image->pix[j * image->width + i];
 
-				//FILEIRA VERMELHA
-				if(pixel.r <= 74) {
-					
-				}
-				else if (pixel.r <=134){
+				for (int y = 0; y < 3; y++) {
+                    for (int x = 0; x < 3; x++) {
+                        struct pixel_s *new_pixel = &newImage->pix[(j * 3 + y) * newImage->width + (i * 3 + x)];
 
-				}
-				else if (pixel.r <=179) {
+                        // Red channel
+                        new_pixel->r = apply_subpixel_pattern(pixel.r, y, x);
 
-				}
-				else {
+                        // Green channel
+                        new_pixel->g = apply_subpixel_pattern(pixel.g, y, x);
 
-				}
-				//FILEIRA VERDE
-				if(pixel.g <= 74) {
-					
-				}
-				else if (pixel.g <=134){
-
-				}
-				else if (pixel.g <=179) {
-
-				}
-				else {
-
-				}
-				//FILEIRA AZUL
-				if(pixel.b <= 74) {
-					
-				}
-				else if (pixel.b <=134){
-
-				}
-				else if (pixel.b <=179) {
-
-				}
-				else {
-
-				}
+                        // Blue channel
+                        new_pixel->b = apply_subpixel_pattern(pixel.b, y, x);
+                    }
+                }
 				
 			}
 		}
@@ -72,4 +51,15 @@ int main()
 		free_ppm(newImage);
 	}
 	return 0;
+	}
+   unsigned char apply_subpixel_pattern(unsigned char color, int x, int y) {
+	if (color <= 74) {
+		return 0;
+	} else if (color <= 134) {
+		return (x == 1 && y == 1) ? color : 0;
+	} else if (color <= 179) {
+		return (x != 1 || y != 1) ? color : 0;
+	} else {
+		return color;
+	}
 }
