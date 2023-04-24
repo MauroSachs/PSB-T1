@@ -4,6 +4,7 @@
 
 unsigned char apply_subpixel_pattern(unsigned char color, int x, int y);
 
+//testando
 
 int main()
 {
