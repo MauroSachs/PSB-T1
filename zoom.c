@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include "lib_ppm.h"
 
-unsigned char apply_subpixel_pattern(unsigned char color, int x, int y);
-
-//testando
+unsigned char aplicaSubpixel(unsigned char color, int x, int y);
 
 int main()
 {
@@ -27,39 +25,47 @@ int main()
 			{
 				struct pixel_s pixel = image->pix[j * image->width + i];
 
+				// percorre o padrão de subpixels para cada canal de cor (RGB)
 				for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
+                        // criação de um padrão de subpixels para cada pixel de 3x3
                         struct pixel_s *new_pixel = &newImage->pix[(j * 3 + y) * newImage->width + (i * 3 + x)];
 
-                        // Red channel
-                        new_pixel->r = apply_subpixel_pattern(pixel.r, y, x);
+                        // Aplica o padrão de subpixel ao canal de cor vermelha
+                        new_pixel->r = aplicaSubpixel(pixel.r, y, x);
 
-                        // Green channel
-                        new_pixel->g = apply_subpixel_pattern(pixel.g, y, x);
+                        // Aplica o padrão de subpixel ao canal de cor verde
+                        new_pixel->g = aplicaSubpixel(pixel.g, y, x);
 
-                        // Blue channel
-                        new_pixel->b = apply_subpixel_pattern(pixel.b, y, x);
+                        // Aplica o padrão de subpixel ao canal de cor azul
+                        new_pixel->b = aplicaSubpixel(pixel.b, y, x);
                     }
                 }
-				
 			}
 		}
 
-
-		write_ppm("result.ppm", newImage);
+		write_ppm("resultado.ppm", newImage);
 
 		free_ppm(image);
 		free_ppm(newImage);
 	}
+
 	return 0;
-	}
-   unsigned char apply_subpixel_pattern(unsigned char color, int x, int y) {
+}
+
+// Implementação do padrão de subpixel
+unsigned char aplicaSubpixel(unsigned char color, int x, int y) {
+	// recebe a cor preta (0, 0, 0)
 	if (color <= 74) {
 		return 0;
+	// recebe a cor vermelha (255, 0, 0)
 	} else if (color <= 134) {
 		return (x == 1 && y == 1) ? color : 0;
+	// recebe a cor verde (0, 255, 0)
 	} else if (color <= 179) {
+	// recebe a cor azul (0, 0, 255)
 		return (x != 1 || y != 1) ? color : 0;
+	// recebe a cor original
 	} else {
 		return color;
 	}
