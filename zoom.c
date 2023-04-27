@@ -13,34 +13,96 @@ int main()
 	int i, j, r, s;
 
 	r = read_ppm("lena.ppm", image);
-	s = new_ppm(newImage, image->width *3, image->height*3);
+	s = new_ppm(newImage, image->width * 3, image->height * 3);
 
 	if (r == 0 && s == 0)
 	{
 		printf("width: %d, height: %d\n", image->width, image->height);
-		
+
 		for (j = 0; j < image->height; j++)
 		{
 			for (i = 0; i < image->width; i++)
 			{
 				struct pixel_s pixel = image->pix[j * image->width + i];
 
-				// percorre o padrão de subpixels para cada canal de cor (RGB)
-				for (int y = 0; y < 3; y++) {
-                    for (int x = 0; x < 3; x++) {
-                        // criação de um padrão de subpixels para cada pixel de 3x3
-                        struct pixel_s *new_pixel = &newImage->pix[(j * 3 + y) * newImage->width + (i * 3 + x)];
+				int pixelRow = j * 3;
+				int pixelColumn = i * 3;
 
-                        // Aplica o padrão de subpixel ao canal de cor vermelha
-                        new_pixel->r = aplicaSubpixel(pixel.r, y, x);
-
-                        // Aplica o padrão de subpixel ao canal de cor verde
-                        new_pixel->g = aplicaSubpixel(pixel.g, y, x);
-
-                        // Aplica o padrão de subpixel ao canal de cor azul
-                        new_pixel->b = aplicaSubpixel(pixel.b, y, x);
-                    }
-                }
+				// FILEIRA VERMELHA
+				if (pixel.r <= 74)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 0;
+				}
+				else if (pixel.r <= 134)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 0;
+				}
+				else if (pixel.r <= 179)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 255;
+				}
+				else
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 255;	
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 255;	
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 255;	
+				}
+				// FILEIRA VERDE
+				if (pixel.g <= 74)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 0;
+				}
+				else if (pixel.g <= 134)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 0;
+				}
+				else if (pixel.g <= 179)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 255;
+				}
+				else
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 255;
+				}
+				// FILEIRA AZUL
+				if (pixel.b <= 74)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 0;
+				}
+				else if (pixel.b <= 134)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 0;
+				}
+				else if (pixel.b <= 179)
+				{
+				newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 255;
+				}
+				else
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 255;
+				}
 			}
 		}
 
@@ -51,22 +113,4 @@ int main()
 	}
 
 	return 0;
-}
-
-// Implementação do padrão de subpixel
-unsigned char aplicaSubpixel(unsigned char color, int x, int y) {
-	// recebe a cor preta (0, 0, 0)
-	if (color <= 74) {
-		return 0;
-	// recebe a cor vermelha (255, 0, 0)
-	} else if (color <= 134) {
-		return (x == 1 && y == 1) ? color : 0;
-	// recebe a cor verde (0, 255, 0)
-	} else if (color <= 179) {
-	// recebe a cor azul (0, 0, 255)
-		return (x != 1 || y != 1) ? color : 0;
-	// recebe a cor original
-	} else {
-		return color;
-	}
 }
