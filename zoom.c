@@ -44,7 +44,7 @@ int main()
 			}
 		}
 
-		write_ppm("resultado.ppm", newImage);
+		write_ppm("./output/resultado.ppm", newImage);
 
 		free_ppm(image);
 		free_ppm(newImage);
