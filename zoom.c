@@ -28,7 +28,7 @@ int main()
 				int pixelRow = j * 3;
 				int pixelColumn = i * 3;
 
-				// FILEIRA VERMELHA
+				// COLUNA VERMELHA
 				if (pixel.r <= 74)
 				{
 					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 0;
@@ -53,7 +53,7 @@ int main()
 					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 255;	
 					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 255;	
 				}
-				// FILEIRA VERDE
+				// COLUNA VERDE
 				if (pixel.g <= 74)
 				{
 					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 0;
@@ -78,7 +78,7 @@ int main()
 					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 255;
 					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 255;
 				}
-				// FILEIRA AZUL
+				// COLUNA AZUL
 				if (pixel.b <= 74)
 				{
 					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 0;
