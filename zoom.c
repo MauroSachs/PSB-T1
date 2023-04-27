@@ -17,7 +17,7 @@ int main()
 
 	if (r == 0 && s == 0)
 	{
-		printf("width: %d, height: %d\n", image->width, image->height);
+		printf("width: %d, height: %d\n", newImage->width, newImage->height);
 
 		for (j = 0; j < image->height; j++)
 		{
