@@ -1,5 +1,8 @@
 #include <stdio.h>
-#include "lib_ppm.h"
+#include <stdlib.h>
+#include "lib_ppm.c"
+
+unsigned char aplicaSubpixel(unsigned char color, int x, int y);
 
 int main()
 {
@@ -10,66 +13,104 @@ int main()
 	int i, j, r, s;
 
 	r = read_ppm("lena.ppm", image);
-	s = new_ppm(newImage, image->width *3, image->height*3);
+	s = new_ppm(newImage, image->width * 3, image->height * 3);
 
 	if (r == 0 && s == 0)
 	{
-		printf("width: %d, height: %d\n", image->width, image->height);
-		
+		printf("width: %d, height: %d\n", newImage->width, newImage->height);
+
 		for (j = 0; j < image->height; j++)
 		{
 			for (i = 0; i < image->width; i++)
 			{
 				struct pixel_s pixel = image->pix[j * image->width + i];
 
-				//FILEIRA VERMELHA
-				if(pixel.r <= 74) {
-					
-				}
-				else if (pixel.r <=134){
+				int pixelRow = j * 3;
+				int pixelColumn = i * 3;
 
+				// COLUNA VERMELHA
+				if (pixel.r <= 74)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 0;
 				}
-				else if (pixel.r <=179) {
-
+				else if (pixel.r <= 134)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 0;
 				}
-				else {
-
+				else if (pixel.r <= 179)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 255;
 				}
-				//FILEIRA VERDE
-				if(pixel.g <= 74) {
-					
+				else
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn].r = 255;	
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn].r = 255;	
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn].r = 255;	
 				}
-				else if (pixel.g <=134){
-
+				// COLUNA VERDE
+				if (pixel.g <= 74)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 0;
 				}
-				else if (pixel.g <=179) {
-
+				else if (pixel.g <= 134)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 0;
 				}
-				else {
-
+				else if (pixel.g <= 179)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 255;
 				}
-				//FILEIRA AZUL
-				if(pixel.b <= 74) {
-					
+				else
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 1].g = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 1].g = 255;
 				}
-				else if (pixel.b <=134){
-
+				// COLUNA AZUL
+				if (pixel.b <= 74)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 0;
 				}
-				else if (pixel.b <=179) {
-
+				else if (pixel.b <= 134)
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 0;
 				}
-				else {
-
+				else if (pixel.b <= 179)
+				{
+				newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 0;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 255;
 				}
-				
+				else
+				{
+					newImage->pix[pixelRow * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 1) * newImage->width + pixelColumn + 2].b = 255;
+					newImage->pix[(pixelRow + 2) * newImage->width + pixelColumn + 2].b = 255;
+				}
 			}
 		}
 
-
-		write_ppm("result.ppm", newImage);
+		write_ppm("./output/resultado.ppm", newImage);
 
 		free_ppm(image);
 		free_ppm(newImage);
 	}
+
 	return 0;
 }
