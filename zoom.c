@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib_ppm.h"
+#include "lib_ppm.c"
 
 unsigned char aplicaSubpixel(unsigned char color, int x, int y);
 
